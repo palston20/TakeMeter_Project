@@ -57,29 +57,43 @@ The dataset contains the following columns:
 
 # Label Definitions
 
-## Green Flag
+### Green Flag
 
 The situation does not present a significant concern, and the behavior described is generally normal, healthy, respectful, or supportive.
 
-**Example:**
+**Example 1:**
 
 > "My partner listens when I bring up a concern, communicates openly, and tries to understand my perspective instead of becoming defensive."
 
-## Yellow Flag
+**Example 2:**
+
+> "My partner respects my friendships and supports my personal goals without expecting me to give them up for the relationship."
+
+
+### Yellow Flag
 
 The situation is concerning or unusual, but it is not necessarily a serious problem and may be resolved through communication, additional context, or a reasonable change in behavior.
 
-**Example:**
+**Example 1:**
 
 > "My partner is uncomfortable with my friendship with an ex, but they have not tried to control the friendship and are willing to discuss reasonable boundaries."
 
-## Red Flag
+**Example 2:**
+
+> "My partner and I have different expectations about how often we should communicate during the day, and we are trying to find a compromise that works for both of us."
+
+
+### Red Flag
 
 The situation involves seriously concerning behavior, such as a major boundary violation, dishonesty, disrespect, manipulation, coercive control, repeated harmful behavior, or behavior that warrants addressing the situation directly.
 
-**Example:**
+**Example 1:**
 
 > "My partner secretly checks my private messages after I explicitly told them that doing so is not okay."
+
+**Example 2:**
+
+> "My partner uses repeated threats, insults, and control to get their way."
 
 ---
 
@@ -150,11 +164,57 @@ The model was instructed to classify each `r/relationship_advice` post into exac
 
 The prompt included:
 
-1. The community and classification task
-2. Definitions of all three labels
-3. One example for each label
-4. Instructions to consider the context of the post
-5. Instructions to output only the label name
+SYSTEM_PROMPT = """You are classifying posts from r/relationship_advice into one of three
+relationship-behavior categories.
+
+Assign each post to exactly ONE category.
+
+Green Flag: The situation does not present a significant concern, and the
+behavior described is generally normal, healthy, respectful, or supportive.
+
+Example: "My partner listens when I bring up a concern, communicates openly,
+and tries to understand my perspective instead of becoming defensive."
+
+Yellow Flag: The situation is concerning or unusual, but it is not necessarily
+a serious problem and may be resolved through communication, additional
+context, or a reasonable change in behavior.
+
+Example: "My partner is uncomfortable with my friendship with an ex, but they
+have not tried to control the friendship and are willing to discuss reasonable
+boundaries."
+
+Red Flag: The situation involves seriously concerning behavior, such as a
+major boundary violation, dishonesty, disrespect, manipulation, coercive
+control, repeated harmful behavior, or behavior that warrants addressing the
+situation directly.
+
+Example: "My partner secretly checks my private messages after I explicitly
+told them that doing so is not okay."
+
+When classifying, focus on the behavior and situation described. Do not rely
+only on keywords such as "toxic," "red flag," or "jealous." Consider the
+context provided and do not assume information that is not stated.
+
+IMPORTANT OUTPUT RULE:
+Your response MUST be exactly ONE of these three labels:
+
+Green Flag
+Yellow Flag
+Red Flag
+
+Do not provide an explanation.
+Do not provide reasoning.
+Do not add punctuation.
+Do not use quotation marks.
+Do not write anything before or after the label.
+
+Example of valid output:
+Yellow Flag
+
+Example of invalid output:
+The situation is a Yellow Flag because...
+
+Now classify the post."""
 
 The baseline model used was:
 
